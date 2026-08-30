@@ -1,20 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProjectById } from '../data/projects';
 import TechStackList from '../components/TechStackList';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { API_BASE_URL } from '../config';
 
 const ProjectDetail = () => {
-  // Grab projectId dynamic URL parameter
   const { projectId } = useParams();
-  const project = getProjectById(projectId);
+  const [project, setProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!project) {
+  useEffect(() => {
+    const fetchProjectDetail = async () => {
+      setIsLoading(true);
+      setError(null);
+      setNotFound(false);
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`);
+        
+        if (response.status === 404) {
+          setNotFound(true);
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: Failed to fetch project details`);
+        }
+
+        const data = await response.json();
+        setProject(data);
+      } catch (err) {
+        console.error(`Error fetching project ${projectId}:`, err);
+        setError(err.message || 'Unable to connect to Express backend server.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (projectId) {
+      fetchProjectDetail();
+    }
+  }, [projectId]);
+
+  if (isLoading) {
+    return (
+      <div className="section-container">
+        <LoadingSpinner message={`Fetching project "${projectId}" from Backend API...`} />
+      </div>
+    );
+  }
+
+  if (notFound) {
     return (
       <div className="section-container">
         <div className="container" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
-          <h2>Project Not Found</h2>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '1rem' }}>
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <h2 style={{ color: '#ef4444' }}>Project Not Found</h2>
           <p style={{ color: 'var(--text-muted)', margin: '1rem 0 2rem' }}>
-            No project matches the specified ID "{projectId}".
+            No project matches the specified ID "{projectId}" on the API server.
           </p>
           <Link to="/projects" className="btn btn-primary">
             &larr; Back to Projects
@@ -23,6 +72,24 @@ const ProjectDetail = () => {
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="section-container">
+        <div className="container" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+          <h2 style={{ color: '#ef4444' }}>Error Loading Project</h2>
+          <p style={{ color: 'var(--text-muted)', margin: '1rem 0 2rem' }}>
+            {error}
+          </p>
+          <Link to="/projects" className="btn btn-primary">
+            &larr; Back to All Projects
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!project) return null;
 
   return (
     <div className="section-container">

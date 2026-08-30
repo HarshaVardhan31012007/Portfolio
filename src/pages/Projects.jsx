@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProjectList from '../components/ProjectList';
-import { projectsData } from '../data/projects';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { API_BASE_URL } from '../config';
 
 const Projects = () => {
+  const [projects, setProjects] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchProjects = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/projects`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: Failed to load projects from server`);
+      }
+      const data = await response.json();
+      setProjects(data);
+    } catch (err) {
+      console.error('Error fetching projects:', err);
+      setError(err.message || 'Unable to connect to Express backend server.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   const categories = ['All', 'Backend & Systems', 'Algorithms & Search', 'AI & Distributed Systems', 'Algorithms & Web'];
 
   const filteredProjects = selectedCategory === 'All'
-    ? projectsData
-    : projectsData.filter(project => project.category === selectedCategory);
+    ? projects
+    : projects.filter(project => project.category === selectedCategory);
 
   return (
     <div className="section-container">
@@ -36,8 +62,34 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Prop Drilling: Projects Page -> ProjectList -> ProjectCard -> TechStackList */}
-        <ProjectList projects={filteredProjects} />
+        {/* Loading State Indicator */}
+        {isLoading && <LoadingSpinner message="Fetching projects from Express Backend API..." />}
+
+        {/* Error State Banner */}
+        {error && (
+          <div className="glass-card" style={{ padding: '2.5rem', textAlign: 'center', borderColor: '#ef4444', background: 'rgba(239, 68, 68, 0.05)' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '1rem' }}>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h3 style={{ color: '#ef4444', marginBottom: '0.5rem' }}>Backend Connection Error</h3>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>
+              Failed to load projects from <code>{API_BASE_URL}/api/projects</code> ({error})
+            </p>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+              Please ensure the Express backend server is running in <code>/server</code> (e.g. <code>npm start</code>).
+            </p>
+            <button onClick={fetchProjects} className="btn btn-primary btn-sm">
+              &orarr; Retry Connection
+            </button>
+          </div>
+        )}
+
+        {/* Project List */}
+        {!isLoading && !error && (
+          <ProjectList projects={filteredProjects} />
+        )}
       </div>
     </div>
   );

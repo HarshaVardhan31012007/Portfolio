@@ -2,13 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TechStackList from './TechStackList';
 
-/**
- * ProjectCard Component
- * Generic reusable component receiving project data entirely via props.
- * Demonstrates:
- * 1. Independent component-scoped state (isExpanded useState) per instance.
- * 2. Prop drilling to grandchild component TechStackList.
- */
 const ProjectCard = ({
   id,
   title,
@@ -19,7 +12,6 @@ const ProjectCard = ({
   githubUrl,
   badgeText
 }) => {
-  // Independent state per ProjectCard instance
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleDetails = () => {

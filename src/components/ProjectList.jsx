@@ -1,11 +1,6 @@
 import React from 'react';
 import ProjectCard from './ProjectCard';
 
-/**
- * ProjectList Component
- * Child component receiving projects array passed from Projects page (Parent),
- * and mapping over them to pass individual project attributes to ProjectCard (Grandchild).
- */
 const ProjectList = ({ projects }) => {
   if (!projects || projects.length === 0) {
     return <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No projects found.</p>;

@@ -3,31 +3,34 @@ import { Link } from 'react-router-dom';
 import SkillsSection from '../components/SkillsSection';
 import ProjectList from '../components/ProjectList';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { projectsData } from '../data/projects';
+import { API_BASE_URL } from '../config';
 
 const Home = () => {
-  // State: Loading state simulation for Assignment Spec 2.3
+  const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Side Effect 1: Simulate brief loading sequence on component mount
   useEffect(() => {
-    // Delay showing content by ~800ms to fulfill assignment spec 2.3
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-
-    // Mandatory cleanup function to prevent memory leak
-    return () => {
-      clearTimeout(timer);
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/projects`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: Failed to fetch projects`);
+        }
+        const data = await response.json();
+        setProjects(data);
+      } catch (err) {
+        console.error('Error loading projects on Home page:', err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
-  }, []); // Empty dependency array [] -> runs once on mount
 
-  // Filter featured projects for home page
-  const featuredProjects = projectsData.filter(p => p.isFeatured);
+    fetchProjects();
+  }, []);
 
-  if (isLoading) {
-    return <LoadingSpinner message="Initializing Portfolio Engine..." />;
-  }
+  const featuredProjects = projects.filter(p => p.isFeatured);
 
   return (
     <div>
@@ -90,8 +93,17 @@ const Home = () => {
             <div className="header-line"></div>
           </div>
 
-          {/* Prop Drilling: Home -> ProjectList -> ProjectCard -> TechStackList */}
-          <ProjectList projects={featuredProjects} />
+          {isLoading && <LoadingSpinner message="Loading featured systems from API..." />}
+
+          {error && (
+            <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center', borderColor: '#ef4444' }}>
+              <p style={{ color: '#ef4444' }}>Backend API offline. Start backend server in <code>/server</code> to load projects.</p>
+            </div>
+          )}
+
+          {!isLoading && !error && (
+            <ProjectList projects={featuredProjects} />
+          )}
 
           <div style={{ textAlign: 'center', marginTop: '3rem' }}>
             <Link to="/projects" className="btn btn-primary">

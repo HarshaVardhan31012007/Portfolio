@@ -11,30 +11,25 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
 function App() {
-  // State 1: Theme State lifted to top-level App component
   const [theme, setTheme] = useState(() => {
-    // Read theme from localStorage on initial render
     const savedTheme = localStorage.getItem('portfolio-theme');
     if (savedTheme) {
       return savedTheme;
     }
-    // Fallback to system preference or default to 'dark'
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
       return 'light';
     }
     return 'dark';
   });
 
-  // Side Effect 2: Persist theme to localStorage & update DOM attribute whenever theme changes
+
   useEffect(() => {
-    // Save theme preference to localStorage
     localStorage.setItem('portfolio-theme', theme);
-    // Update data-theme attribute on document root / body
     document.documentElement.setAttribute('data-theme', theme);
     document.body.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Toggle Theme Handler
+
   const toggleTheme = () => {
     setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
   };

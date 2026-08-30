@@ -1,0 +1,170 @@
+{
+  "info": {
+    "_postman_id": "portfolio-api-collection-a3",
+    "name": "Portfolio Website Backend API (Assignment 3)",
+    "description": "Postman Collection covering all endpoints (B1-B7) for NIT Warangal CS1303 Assignment 3 - Express Backend Integration.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "B1 - Server Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        },
+        "description": "Base route confirming backend status."
+      },
+      "response": []
+    },
+    {
+      "name": "B2 - Get All Projects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/projects",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "projects"]
+        },
+        "description": "Returns array of project objects."
+      },
+      "response": []
+    },
+    {
+      "name": "B3 - Get Single Project (Success)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/projects/stayverse",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "projects", "stayverse"]
+        },
+        "description": "Returns project matching valid ID 'stayverse'."
+      },
+      "response": []
+    },
+    {
+      "name": "B3 - Get Single Project (404 Not Found)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/projects/non-existent-project-id",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "projects", "non-existent-project-id"]
+        },
+        "description": "Returns HTTP 404 JSON for non-existent project."
+      },
+      "response": []
+    },
+    {
+      "name": "B4 - Submit Contact Form (201 Success)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice Johnson\",\n  \"email\": \"alice.j@example.com\",\n  \"message\": \"Hello Harsha, I saw your portfolio and would like to discuss backend engineering roles at our tech firm.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contact",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contact"]
+        },
+        "description": "Valid contact form submission returning HTTP 201."
+      },
+      "response": []
+    },
+    {
+      "name": "B4 - Submit Contact Form (400 Invalid Email)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Bob Smith\",\n  \"email\": \"invalid-email-address\",\n  \"message\": \"Looking to connect regarding software roles.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contact",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contact"]
+        },
+        "description": "Triggers email validation error returning HTTP 400."
+      },
+      "response": []
+    },
+    {
+      "name": "B4 - Submit Contact Form (400 Missing Fields)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Charlie\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contact",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contact"]
+        },
+        "description": "Triggers missing field validation error returning HTTP 400."
+      },
+      "response": []
+    },
+    {
+      "name": "B5 - List All Submissions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/contact",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "contact"]
+        },
+        "description": "Returns array of stored contact submissions (Open Endpoint)."
+      },
+      "response": []
+    },
+    {
+      "name": "B6 - Centralized 404 Route Handler",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/undefined-endpoint-test",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "undefined-endpoint-test"]
+        },
+        "description": "Triggers catch-all 404 middleware returning HTTP 404 JSON."
+      },
+      "response": []
+    }
+  ]
+}

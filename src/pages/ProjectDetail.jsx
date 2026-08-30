@@ -18,7 +18,10 @@ const ProjectDetail = () => {
       setNotFound(false);
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`);
+        const [response] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/projects/${projectId}`),
+          new Promise(resolve => setTimeout(resolve, 300))
+        ]);
         
         if (response.status === 404) {
           setNotFound(true);

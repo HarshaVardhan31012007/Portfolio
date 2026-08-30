@@ -6,7 +6,14 @@
     "isFeatured": true,
     "shortDescription": "A scalable Vacation Rental Platform focused on robust MVC backend operations, secure authentication, and high-performance geospatial queries.",
     "fullDescription": "StayVerse is a production-grade vacation rental platform engineered to process concurrent booking requests and complex geographic searches with minimal latency. Built using Node.js, Express, and MongoDB, the system implements geospatial 2dsphere indexing for instant proximity-based listing discovery, robust session management with JWT and HTTP-only cookies, and atomicity guarantees for reservation workflows.",
-    "techStack": ["Node.js", "Express.js", "MongoDB", "Geospatial Indexing", "JWT", "REST API"],
+    "techStack": [
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Geospatial Indexing",
+      "JWT",
+      "REST API"
+    ],
     "achievements": [
       "Architected a scalable MVC backend with clean RESTful API endpoints and middleware pipelines",
       "Engineered concurrency-safe reservation workflows, reducing booking conflicts by 40%",
@@ -27,7 +34,13 @@
     "isFeatured": true,
     "shortDescription": "An optimal C++ search engine capable of solving arbitrary 3x3 Rubik's Cube configurations using advanced graph search heuristics.",
     "fullDescription": "A high-performance algorithmic search engine implemented in Modern C++ (C++17) designed to solve scrambles of a 3x3 Rubik's Cube. The solver transitions from simple Breadth-First Search (BFS) and Iterative Deepening DFS (IDDFS) for low-depth scrambles to Korf's IDA* algorithm utilizing precomputed pattern databases for complex 13+ depth scrambles.",
-    "techStack": ["C++17", "IDA* Algorithm", "BFS / IDDFS", "Pattern Databases", "Bitboards"],
+    "techStack": [
+      "C++17",
+      "IDA* Algorithm",
+      "BFS / IDDFS",
+      "Pattern Databases",
+      "Bitboards"
+    ],
     "achievements": [
       "Implemented BFS, DFS, and IDDFS for 8-scramble puzzles in under 3 seconds",
       "Extended implementation to Korf's IDA* using precomputed corner pattern databases",
@@ -48,7 +61,14 @@
     "isFeatured": true,
     "shortDescription": "An open-source AI-powered career assistant utilizing distributed task processing for real-time application tracking and async background job queues.",
     "fullDescription": "PlaceMentor369 is an open-source platform that streamlines student placement preparation by pairing Gemini AI resume parsing with distributed job execution queues. The platform uses Redis and BullMQ to offload memory-heavy LLM document processing, while Socket.IO delivers real-time progress notifications to candidate dashboards.",
-    "techStack": ["Node.js", "Redis", "BullMQ", "Socket.IO", "Gemini API", "Open Source"],
+    "techStack": [
+      "Node.js",
+      "Redis",
+      "BullMQ",
+      "Socket.IO",
+      "Gemini API",
+      "Open Source"
+    ],
     "achievements": [
       "Architected a Redis-backed distributed job pipeline handling asynchronous parsing workloads",
       "Engineered real-time notification tracking via Socket.IO, cutting notification latency by 95%",
@@ -69,7 +89,13 @@
     "isFeatured": false,
     "shortDescription": "An AI-assisted recommendation engine matching applicants with 184+ GSoC organization tech stacks and contributor profiles.",
     "fullDescription": "Developed during Nexus Spring of Code (NSoC), this engine analyzes an open-source contributor's GitHub repositories, programming language distribution, and commit history to compute weighted similarity scores against 184 Google Summer of Code organizations.",
-    "techStack": ["TypeScript", "React", "Node.js", "TF-IDF Scoring", "GitHub API"],
+    "techStack": [
+      "TypeScript",
+      "React",
+      "Node.js",
+      "TF-IDF Scoring",
+      "GitHub API"
+    ],
     "achievements": [
       "Engineered a 4-factor recommendation algorithm improving organization discoverability by 30%",
       "Indexed tech stacks and past project repositories across 184 GSoC organizations",

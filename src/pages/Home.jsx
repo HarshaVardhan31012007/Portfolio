@@ -13,7 +13,10 @@ const Home = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/projects`);
+        const [response] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/projects`),
+          new Promise(resolve => setTimeout(resolve, 300))
+        ]);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: Failed to fetch projects`);
         }

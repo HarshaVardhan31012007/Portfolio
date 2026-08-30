@@ -13,7 +13,10 @@ const Projects = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/projects`);
+      const [response] = await Promise.all([
+        fetch(`${API_BASE_URL}/api/projects`),
+        new Promise(resolve => setTimeout(resolve, 300))
+      ]);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: Failed to load projects from server`);
       }
@@ -80,8 +83,15 @@ const Projects = () => {
             <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
               Please ensure the Express backend server is running in <code>/server</code> (e.g. <code>npm start</code>).
             </p>
-            <button onClick={fetchProjects} className="btn btn-primary btn-sm">
-              &orarr; Retry Connection
+            <button 
+              onClick={fetchProjects} 
+              className="btn btn-primary btn-sm"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', margin: '0 auto' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+              Retry Connection
             </button>
           </div>
         )}

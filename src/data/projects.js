@@ -1,7 +1,7 @@
 export const projectsData = [
   {
     id: "stayverse",
-    title: "StayVerse",
+    title: "Stay",
     category: "Backend & Systems",
     isFeatured: true,
     shortDescription: "A scalable Vacation Rental Platform focused on robust MVC backend operations, secure authentication, and high-performance geospatial queries.",
